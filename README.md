@@ -60,7 +60,7 @@ Parsed will be an array of elements containing the siblings, in each element we 
 
                             'value': '21',
 
-                            'attributes: {},
+                            'attributes': {},
 
                             'elements': []
 
