@@ -95,20 +95,6 @@ class xmlParser {
         this.addValue("<![CDATA[" + value + "]]>");
     }
 
-    getCleanValue() {
-        var matches = this.getValue().match(/<!\[CDATA\[.*?]]>/g);
-        var result = this.getValue();
-        
-        for (var match in matches) {
-            match = matches[match];
-            var data = match.replace(/^<!\[CDATA\[/g, '').replace(/\]\]>$/g, '');
-            result = result.replaceAll(match, data);
-        }
-
-        return result;
-    }
-
-
     parseTag(fullTag) {
         var inString = false;
         var currentStringSymbol = "";
@@ -318,20 +304,16 @@ class xmlJsonLoop {
             return this.next();
         }
     }
-
-    skipToSibling() {
-        this.position.pop();
-    }
-
+    
     getName() {
         return this.current;
     }
-
+    
     getValue() {
         var last = this.position.length - 1;
         return this.position[last][0]['value'];
     }
-
+    
     getCleanValue() {
         var last = this.position.length - 1;
         var matches = this.getValue().match(/<!\[CDATA\[.*?]]>/g);
@@ -342,27 +324,31 @@ class xmlJsonLoop {
             var data = match.replace(/^<!\[CDATA\[/g, '').replace(/\]\]>$/g, '');
             result = result.replaceAll(match, data);
         }
-
+        
         return result;
     }
-
+    
     getAttributes() {
         var last = this.position.length - 1;
         return this.position[last][0]['attributes'];
     }
-
+    
     getAttribute(attribute) {
         var last = this.position.length - 1;
         return this.position[last][0]['attributes'][attribute] || undefined;
     }
-
+    
     getChildCount() {
         var last = this.position.length - 1;
         return this.position[last][0]['elements'].length;
     }
-
+    
     hasChildren() {
         return this.getChildCount() > 0;
+    }
+    
+    skipToSibling() {
+        this.position.pop();
     }
 
     stop() {
@@ -412,14 +398,14 @@ class tagBuilder {
         return this.tagParts.attributes = attributes;
     }
 
-    addAttributes(attributes) {
+    attributes(attributes) {
         for (var attribute in attributes) {
-            this.addAttribute(attribute, attributes[attribute]);
+            this.attribute(attribute, attributes[attribute]);
         }
         return this.tagParts.attributes;
     }
 
-    addAttribute(label, value) {
+    attribute(label, value) {
         this.tagParts.attributes[label] = value;
         return this.tagParts.attributes;
     }
