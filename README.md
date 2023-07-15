@@ -1,2 +1,2 @@
 # PartyParser
-js xml parser, builder and looper
+JS XML parser, builder and looper
