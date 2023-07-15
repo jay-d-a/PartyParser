@@ -1,0 +1,14 @@
+{
+  "name": "partyparser",
+  "version": "1.0.0",
+  "description": "xml parser, builder and looper",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "JDARM",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.6.1"
+  }
+}
