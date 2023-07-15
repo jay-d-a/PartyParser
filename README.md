@@ -20,7 +20,7 @@ var parsed = new xmlParser(xml).parse();
 ```
 
 Parsed will be an array of elements containing the siblings, in each element we have an element array for children, I wouldn't worry about the structure though as the object has a builder to abstract this. the above would create JSON like the below which can be access by the returned value or the property xml.
-```json
+```js
 
 {
 
