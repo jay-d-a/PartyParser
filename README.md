@@ -1,5 +1,4 @@
 # PartyParser
-<<<<<<< Updated upstream
 ## JS XML parser, builder and loopers
 =======
 
@@ -89,15 +88,15 @@ var json = {} //Like the above example
 var parsed = new xmlParser(json).build();
 ```
 
-and the out put of this will be, now with line breaks and tabs:
+and the output of this will be, now with line breaks and tabs:
 ```xml
 <person title="Mr">\n\t<name>James</name>\n\t<age>21</age>\n</person>
 ```
 
-This can be accessed from the returned or by the objects xml property;
+This can be accessed from the returned or by the objects xml property.
 
 ### Building
-We can easily create a xml object with below methods
+We can easily create a xml object with below methods.
 ```js
 const { xmlParser } = require('partyparser');
 var newXml = new xmlParser(json);
@@ -123,7 +122,7 @@ You can close any of the tags and you will be moved appropriately so closing chi
 * attributes({}) will add multiple attributes
 * removeAttribute(label) will remove the attribute
 * addCData(val) can be used to add cdata to the value, 
-> [!warning] CData is interesting as you can do addValue addCData and addValue, and the value would have the cdata tag within, though im not sure how this would play with external systems not using partyparser.
+> CData is interesting as you can do addValue addCData and addValue, and the value would have the cdata tag within, though im not sure how this would play with external systems not using partyparser.
 
 ### Looping
 For this parser i have created a object for easier navigation of the parsed xml.
@@ -161,7 +160,7 @@ while (loop.next()) {
 * stop() will stop the loop
  
 ### Tag Builder
-a simple object to build tags, used by .build() in xmlParser to make xml tags
+a simple object to build tags, used by .build() in xmlParser to make xml tags.
 
 #### Usage
 ```js
@@ -175,12 +174,12 @@ the object accepts tag name, attributes and closed boolean on creation. name and
 ```xml
 <person title="Mr" age="21"/>
 ```
-where as by default it is false and would generate the below
+where as by default it is false and would generate the below.
 ```xml
 <person title="Mr" age="21"/>
 ```
 
-if you want to generate a closed tag just set name to /name
+if you want to generate a closed tag just set name to /name.
 ```xml
 </person title="Mr" age="21">
 ```
@@ -192,4 +191,3 @@ if you want to generate a closed tag just set name to /name
 * removeAttribute(label) removes an attribute
 * setName() sets the tag name
 * setClosed() adds / to end of tag if true
->>>>>>> Stashed changes
