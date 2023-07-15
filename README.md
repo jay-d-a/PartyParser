@@ -1,9 +1,5 @@
 # PartyParser
 ## JS XML parser, builder and loopers
-=======
-
-### JS XML parser, builder and looper
-## Synchronous
 Currently only have synchronous process.
 
 ### Parse
