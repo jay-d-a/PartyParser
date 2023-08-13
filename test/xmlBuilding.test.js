@@ -1,6 +1,5 @@
 const { xmlParser } = require("../index");
 
-//tags
 test('Builder: open tag with no value or child', () => {
     var xml = new xmlParser();
     xml.open('root');
@@ -293,7 +292,8 @@ var xmlExample = `<?xml version="1.0" encoding="UTF-8" ?>
   <chamber>-1349042115</chamber>
 </root>`;
 
-var expectedAfterParse = `<root>
+var expectedAfterParse = `<?xml version="1.0" encoding="UTF-8"?>
+<root>
 	<climate>-926247724</climate>
 	<giant>
 		<spell upper="fall">1147665599.4171147</spell>
