@@ -24,6 +24,10 @@ class xmlParser {
         return /<\/[A-z0-9._\-]:?[A-z0-9._\-]*.*\/{0}>/g.test(value);
     }
 
+    isMetaTag(value) {
+        return /<?[A-z0-9._\-]:?[A-z0-9._\-]*.*?>/g.test(value);
+    }
+
     isDataTag(value) {
         return /<!\[CDATA\[.*]]>/g.test(value);
     }
@@ -42,9 +46,18 @@ class xmlParser {
         newobj[tag] = {
             "value": value || "",
             "attributes": attributes || {},
-            "elements": []
+            "elements": [],
+            "meta": false
         };
         this.position[last]['elements'].push(newobj);
+    }
+
+    addMeta(tag, attributes) {
+        tag = tag.replace('?', '');
+        this.add(tag, attributes);
+        var last = this.position.length - 1;
+        var location = this.position[last]['elements'].length - 1;
+        this.position[last]['elements'][location][tag]['meta'] = true;
     }
 
     open(tag, attributes, value) {
@@ -197,6 +210,9 @@ class xmlParser {
                 var tag = this.parseTag(value);
                 this.close(tag.name);
 
+            } else if (this.isMetaTag(value)) {
+                var tag = this.parseTag(value);
+                this.addMeta(tag.name, tag.attributes);
             } else {
                 this.addValue(value);
             }
@@ -212,7 +228,15 @@ class xmlParser {
         var opened = [];
         var tab = "\t";
         while (loop.next()) {
-            if (loop.closed[0]) {
+
+
+            //meta tag
+            if (loop.getMeta()) {
+                this.xml += "\n" + tab.repeat(opened.length) + new tagBuilder("?" + loop.getName(), loop.getAttributes(), true, "?").build();
+            }
+
+            //closing tag
+            if (loop.closed[0] && !loop.getMeta()) {
                 for (var close in loop.closed) {
                     this.xml += "\n" + tab.repeat(opened.length - 1) + new tagBuilder("/" + loop.closed[close]).build();
                     opened.shift();
@@ -220,13 +244,18 @@ class xmlParser {
                 loop.closed = [];
             }
 
-            if (loop.getValue().length > 0 || loop.hasChildren()) {
+            //open tag
+            if ((loop.getValue().length > 0 || loop.hasChildren()) && !loop.getMeta()) {
                 this.xml += "\n" + tab.repeat(opened.length) + new tagBuilder(loop.getName(), loop.getAttributes()).build();
                 opened.unshift(loop.getName());
-            } else {
+            } else if (!loop.getMeta()) {
+                //closed tag
                 this.xml += "\n" + tab.repeat(opened.length) + new tagBuilder(loop.getName(), loop.getAttributes(), true).build();
             }
 
+
+
+            //value
             if (loop.getValue().length > 0) {
                 this.xml += loop.getValue();
             }
@@ -342,6 +371,11 @@ class xmlJsonLoop {
         var last = this.position.length - 1;
         return this.position[last][0]['elements'].length;
     }
+
+    getMeta() {
+        var last = this.position.length - 1;
+        return this.position[last][0]['meta'];
+    }
     
     hasChildren() {
         return this.getChildCount() > 0;
@@ -357,8 +391,9 @@ class xmlJsonLoop {
 }
 
 class tagBuilder {
-    constructor(name, attributes, closed) {
+    constructor(name, attributes, closed, endSymbol) {
         this.tag = "";
+        this.endSymbol = endSymbol || "";
         this.closed = closed || false;
         this.tagParts = {
             "name": name || undefined,
@@ -380,7 +415,7 @@ class tagBuilder {
             middle += " " + attribute + '="' + value + '"';
         }
 
-        var end = this.closed ? "/>" : ">";
+        var end = this.closed ? this.endSymbol + ">" : ">";
 
         return start + middle + end;
     }
