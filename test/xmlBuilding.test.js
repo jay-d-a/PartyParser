@@ -1,6 +1,5 @@
 const { xmlParser } = require("../index");
 
-//tags
 test('Builder: open tag with no value or child', () => {
     var xml = new xmlParser();
     xml.open('root');
