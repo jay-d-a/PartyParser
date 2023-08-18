@@ -113,7 +113,7 @@ class xmlParser {
 
         var attributes = fullTag.match(/(\w+\s*=\s*(?:"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'))/gm) || [];
         var attributeObj = {};
-        var name = fullTag.match(/[A-z_\-:]+/gm)[0];
+        var name = fullTag.match(/[A-z0-9_\-:]+/gm)[0];
 
         for (var attribute in attributes) {
             var fullAttribute = attributes[attribute];
